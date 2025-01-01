@@ -51,8 +51,9 @@ headers = {
     "x-ms-version":"2018-12-31"
 
 }
+final_url = f"{azure_cosmos_db_url}/{resource_link}"
 
-res = requests.get(url = azure_cosmos_db_url, headers=headers)
+res = requests.get(url = final_url, headers=headers)
 
 print(res.status_code)
 print(res.json())

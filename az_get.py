@@ -4,13 +4,13 @@ import hmac
 import hashlib
 import base64
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, UTC
 from urllib.parse import quote
 
 load_dotenv()
 
 azure_master_key = os.environ.get("azure_key")      # you can select here primary key
-azure_cosmos_db_url = os.environ.get("azure_url")  # https://<paste here cosmos db account name>.documents.azure.com:443
+azure_cosmos_db_url = os.environ.get("azure_url")  # https://<paste here cosmos db account name>.documents.azure.com:443/dbs
 
 
 def prepare_auth_token(method,azure_master_key, resource_type, resource_link, date):
@@ -37,10 +37,10 @@ def prepare_auth_token(method,azure_master_key, resource_type, resource_link, da
 
 method = "get"
 resource_type = "dbs"
-resource_link = "dbs/testdb"     # here just i want to verify about db
-date = datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+resource_link = ""     
+date = datetime.now(UTC).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
-
+print(date)
 master_auth_token = prepare_auth_token(method, azure_master_key, resource_type, resource_link, date)
 
 headers = {
@@ -52,6 +52,9 @@ headers = {
 
 }
 final_url = f"{azure_cosmos_db_url}/{resource_link}"
+
+print(final_url)
+print(master_auth_token)
 
 res = requests.get(url = final_url, headers=headers)
 
